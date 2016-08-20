@@ -14,9 +14,11 @@ class DiffLine(object):
             begin = longer.find(shorter)
             parts = [s for s in [longer[:begin], longer[begin+len(shorter):]] if s]
             left, right = "", (" "*len(shorter)).join(parts)
-        return self._prefixes_for_lines(left, right) if not reverse else self._prefixes_for_lines(right, left)
+        return self._prefixes_for_lines(left, right, reverse)
 
-    def _prefixes_for_lines(self, left, right):
+    def _prefixes_for_lines(self, left, right, reverse=False):
+        if reverse:
+            return self._prefixes_for_lines(right, left)
         accum = ""
         if left:
             accum += "< "+left+"\n"

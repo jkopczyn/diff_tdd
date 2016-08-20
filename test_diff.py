@@ -24,9 +24,9 @@ class TestSingleLines:
 
     def test_compare_suffix_to_full_string(self):
         diff_object = diff.DiffStrings('thing', 'something')
-        assert diff_object.result == '> thing'
+        assert diff_object.result == '> some'
         diff_object = diff.DiffStrings('something', 'thing')
-        assert diff_object.result == '< thing'
+        assert diff_object.result == '< some'
 
     #def test_suffix_difference(self):
     #    diff_object = diff.DiffStrings('this', 'that')

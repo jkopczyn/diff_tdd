@@ -2,12 +2,29 @@ class DiffLine(object):
     def __init__(self, first, second):
         if first == second:
             self.result = ''
-        elif first in second:
-            self.result = "> "+second
-        elif second in first:
-            self.result = "< "+first
+        elif len(first) < len(second):
+            self.result = self._parse_for_diffs(first, second)
         else:
-            self.result = "\n".join(["< "+first, "> "+second])
+            self.result = self._parse_for_diffs(second, first, reverse=True)
+
+    def _parse_for_diffs(self, shorter, longer, reverse=False):
+        left = ""
+        right = ""
+        offset = 0
+        for idx in range(len(shorter)):
+            if shorter[idx] != longer[idx]:
+                left += shorter[idx]
+                right += longer[idx]
+        right += longer[len(shorter):]
+        return self._prefixes_for_lines(left, right) if not reverse else self._prefixes_for_lines(right, left)
+
+    def _prefixes_for_lines(self, left, right):
+        accum = ""
+        if left:
+            accum += "< "+left+"\n"
+        if right:
+            accum += "> "+right+"\n"
+        return accum[:-1]
 
 class DiffStrings(DiffLine):
     pass
